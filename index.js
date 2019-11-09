@@ -9,36 +9,36 @@ class ImageData {
 
     if (typeof width === 'object') {
       if (!(width instanceof Uint8ClampedArray)) {
-        throw new TypeError(`Failed to construct 'ImageData': parameter 1 is not of type 'Uint8ClampedArray'.`)
+        throw new TypeError("Failed to construct 'ImageData': parameter 1 is not of type 'Uint8ClampedArray'.")
       }
 
       if (typeof height !== 'number' || height === 0) {
-        throw new Error(`Failed to construct 'ImageData': The source width is zero or not a number.`)
+        throw new Error("Failed to construct 'ImageData': The source width is zero or not a number.")
       }
 
       height = height >>> 0
 
       if ((height * 4) > width.length) {
-        throw new Error(`Failed to construct 'ImageData': The requested image size exceeds the supported range.`)
+        throw new Error("Failed to construct 'ImageData': The requested image size exceeds the supported range.")
       }
 
       if ((width.length % 4) !== 0) {
-        throw new Error(`Failed to construct 'ImageData': The input data length is not a multiple of 4.`)
+        throw new Error("Failed to construct 'ImageData': The input data length is not a multiple of 4.")
       }
 
       if ((width.length % (4 * height)) !== 0) {
-        throw new Error(`Failed to construct 'ImageData': The input data length is not a multiple of (4 * width).`)
+        throw new Error("Failed to construct 'ImageData': The input data length is not a multiple of (4 * width).")
       }
 
       if (typeof args[0] !== 'undefined') {
         if (typeof args[0] !== 'number' || args[0] === 0) {
-          throw new Error(`Failed to construct 'ImageData': The source height is zero or not a number.`)
+          throw new Error("Failed to construct 'ImageData': The source height is zero or not a number.")
         }
 
         args[0] = args[0] >>> 0
 
         if ((width.length % (4 * height * args[0])) !== 0) {
-          throw new Error(`Failed to construct 'ImageData': The input data length is not equal to (4 * width * height).`)
+          throw new Error("Failed to construct 'ImageData': The input data length is not equal to (4 * width * height).")
         }
       }
 
@@ -47,19 +47,19 @@ class ImageData {
       Object.defineProperty(this, 'data', { configurable: true, enumerable: true, value: width, writable: false })
     } else {
       if (typeof width !== 'number' || width === 0) {
-        throw new Error(`Failed to construct 'ImageData': The source width is zero or not a number.`)
+        throw new Error("Failed to construct 'ImageData': The source width is zero or not a number.")
       }
 
       width = width >>> 0
 
       if (typeof height !== 'number' || height === 0) {
-        throw new Error(`Failed to construct 'ImageData': The source height is zero or not a number.`)
+        throw new Error("Failed to construct 'ImageData': The source height is zero or not a number.")
       }
 
       height = height >>> 0
 
       if ((width * height) >= (1 << 30)) {
-        throw new Error(`Failed to construct 'ImageData': The requested image size exceeds the supported range.`)
+        throw new Error("Failed to construct 'ImageData': The requested image size exceeds the supported range.")
       }
 
       widthMap.set(this, width)
