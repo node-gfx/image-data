@@ -219,3 +219,33 @@ assert(ImageData.length === 2)
   assert(enumerableKeys.includes('width'))
   assert(enumerableKeys.includes('height'))
 }
+
+// Node.js 10.12.0 and newer
+if (typeof process === 'object' && require('util').inspect.custom === Symbol.for('nodejs.util.inspect.custom')) {
+  const { inspect } = require('util')
+  const img = new ImageData(1, 1)
+
+  assert(inspect(img, { colors: false, depth: -1 }) === '[ImageData]')
+  assert(inspect(img, { colors: true, depth: -1 }) === '\u001b[36m[ImageData]\u001b[39m')
+
+  assert(inspect(img, { colors: false, depth: 0 }) === 'ImageData { data: [Uint8ClampedArray], width: 1, height: 1 }')
+  assert(inspect(img, { colors: true, depth: 0 }) === 'ImageData { data: \u001b[36m[Uint8ClampedArray]\u001b[39m, width: \u001b[33m1\u001b[39m, height: \u001b[33m1\u001b[39m }')
+
+  if (/^v(12|[2-9]\d+)\./.test(process.version)) {
+    assert(inspect(img, { colors: false, depth: 1 }) === 'ImageData {\n  data: Uint8ClampedArray [ 0, 0, 0, 0 ],\n  width: 1,\n  height: 1\n}')
+    assert(inspect(img, { colors: true, depth: 1 }) === 'ImageData {\n  data: Uint8ClampedArray [ \u001b[33m0\u001b[39m, \u001b[33m0\u001b[39m, \u001b[33m0\u001b[39m, \u001b[33m0\u001b[39m ],\n  width: \u001b[33m1\u001b[39m,\n  height: \u001b[33m1\u001b[39m\n}')
+  } else {
+    assert(inspect(img, { colors: false, depth: 1 }) === 'ImageData { data: Uint8ClampedArray [ 0, 0, 0, 0 ], width: 1, height: 1 }')
+    assert(inspect(img, { colors: true, depth: 1 }) === 'ImageData { data: Uint8ClampedArray [ \u001b[33m0\u001b[39m, \u001b[33m0\u001b[39m, \u001b[33m0\u001b[39m, \u001b[33m0\u001b[39m ], width: \u001b[33m1\u001b[39m, height: \u001b[33m1\u001b[39m }')
+  }
+
+  img.test = 'foobar'
+
+  if (/^v(12|[2-9]\d+)\./.test(process.version)) {
+    assert(inspect(img, { colors: false, depth: 1 }) === 'ImageData {\n  data: Uint8ClampedArray [ 0, 0, 0, 0 ],\n  width: 1,\n  height: 1,\n  test: \'foobar\'\n}')
+    assert(inspect(img, { colors: true, depth: 1 }) === 'ImageData {\n  data: Uint8ClampedArray [ \u001b[33m0\u001b[39m, \u001b[33m0\u001b[39m, \u001b[33m0\u001b[39m, \u001b[33m0\u001b[39m ],\n  width: \u001b[33m1\u001b[39m,\n  height: \u001b[33m1\u001b[39m,\n  test: \u001b[32m\'foobar\'\u001b[39m\n}')
+  } else {
+    assert(inspect(img, { colors: false, depth: 1 }) === 'ImageData {\n  data: Uint8ClampedArray [ 0, 0, 0, 0 ],\n  width: 1,\n  height: 1,\n  test: \'foobar\' }')
+    assert(inspect(img, { colors: true, depth: 1 }) === 'ImageData {\n  data: Uint8ClampedArray [ \u001b[33m0\u001b[39m, \u001b[33m0\u001b[39m, \u001b[33m0\u001b[39m, \u001b[33m0\u001b[39m ],\n  width: \u001b[33m1\u001b[39m,\n  height: \u001b[33m1\u001b[39m,\n  test: \u001b[32m\'foobar\'\u001b[39m }')
+  }
+}
