@@ -200,3 +200,22 @@ assert(ImageData.length === 2)
   assert(img.height === 16)
   assert(img.data === arr1)
 }
+
+{
+  const img = new ImageData(1, 1)
+
+  const keys = Object.keys(img)
+  assert(keys.length === 1)
+  assert(keys[0] === 'data')
+
+  const ownPropertyNames = Object.getOwnPropertyNames(img)
+  assert(ownPropertyNames.length === 1)
+  assert(ownPropertyNames[0] === 'data')
+
+  const enumerableKeys = []
+  for (const key in img) enumerableKeys.push(key)
+  assert(enumerableKeys.length === 3)
+  assert(enumerableKeys.includes('data'))
+  assert(enumerableKeys.includes('width'))
+  assert(enumerableKeys.includes('height'))
+}
