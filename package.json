@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "repository": "node-gfx/image-data",
+  "react-native":"index.js",
   "browser": "browser.js",
   "scripts": {
     "test": "standard && nyc --check-coverage --lines=100 node test"
