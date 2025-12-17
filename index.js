@@ -81,4 +81,16 @@ Object.defineProperty(ImageData.prototype, 'height', {
   get () { return heightMap.get(this) }
 })
 
+Object.defineProperty(ImageData.prototype, Symbol.for('nodejs.util.inspect.custom'), {
+  enumerable: false,
+  configurable: true,
+  value: function inspectImageData (depth, options) {
+    if (depth < 0) {
+      return options.stylize('[ImageData]', 'special')
+    }
+
+    return Object.assign(new (class ImageData {})(), { data: this.data, width: this.width, height: this.height }, this)
+  }
+})
+
 module.exports = ImageData
